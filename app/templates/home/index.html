@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-8">
+                <div>
+                    <div class="content-bar">
+                        <h2>Welcome to Flight Statistics Project</h2>
+                    </div>
+                    <form id='query-form' method="post">
+                        <div class="mb-3">
+                            <label class="form-label">Your Query</label>
+                            <input type="text" class="form-control" name="query">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                    {% if results %}
+                    <div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    {% for col in cur.description %}
+                                        <th scope='col' colspan='2'>{{ col[0] }}</th>
+                                    {% endfor %}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in results %}
+                                    <tr>
+                                        {% for val in item %}
+                                            <td colspan='2'>{{ val }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-2"></div>
+        </div>
+    </div>
+{% endblock %}

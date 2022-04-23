@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-2"></div>
+            <div class="col-8">
+                <div>
+                    <div class="content-bar">
+                        <h2>Flight Statistics Visualization</h2>
+                    </div>
+                    {% for fig in figs %}
+                        <textarea readonly style="width: 100%;">{{ fig[0] }}</textarea>
+                    {{ fig[1] | safe }}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-2"></div>
+        </div>
+    </div>
+{% endblock %}
