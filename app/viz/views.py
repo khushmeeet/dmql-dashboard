@@ -45,7 +45,23 @@ def viz():
     fig3 = px.line(df, x=[i for i in range(1,50)], y=df.columns)
     fig3.update_layout(title = 'Flight Statistics per month')
     fig3_html = fig3.to_html(full_html=False)
+
+    sql4 = """with total_flights as (
+                select sum(arr_flights+carrier_ct+weather_ct+nas_ct+security_ct+late_aircraft_ct) from flight
+            )
+            select sum(arr_flights)/(select * from total_flights)*100 as arr_flight_percent,
+                sum(carrier_ct)/(select * from total_flights)*100 as weather_ct_percent,
+                sum(nas_ct)/(select * from total_flights)*100 as nas_ct_percent,
+                sum(security_ct)/(select * from total_flights)*100 as security_ct_percent,
+                sum(late_aircraft_ct)/(select * from total_flights)*100 as late_aircraft_ct_percent
+            from flight"""
+    results, cur = execute_query(conn, sql4)
+    df = pd.DataFrame(results)
+    df.columns = [col[0] for col in cur.description]
+    fig4 = px.pie(values=df.iloc[0,:], names=df.columns)
+    fig4.update_layout(title = 'Flight Statistics per month')
+    fig4_html = fig4.to_html(full_html=False)
     cur.close()
     conn.close()
 
-    return render_template('viz/index.html', figs=[(sql1, fig1_html), (sql2, fig2_html), (sql3, fig3_html)])
+    return render_template('viz/index.html', figs=[(sql1, fig1_html), (sql2, fig2_html), (sql3, fig3_html), (sql4, fig4_html)])
