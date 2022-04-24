@@ -1,6 +1,4 @@
 from flask import render_template, Blueprint, request
-import dash_html_components as html
-import dash_core_components as dcc
 from ..utils import get_db_connection
 import pandas as pd
 import plotly
@@ -47,5 +45,7 @@ def viz():
     fig3 = px.line(df, x=[i for i in range(1,50)], y=df.columns)
     fig3.update_layout(title = 'Flight Statistics per month')
     fig3_html = fig3.to_html(full_html=False)
+    cur.close()
+    conn.close()
 
     return render_template('viz/index.html', figs=[(sql1, fig1_html), (sql2, fig2_html), (sql3, fig3_html)])
