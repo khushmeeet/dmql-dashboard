@@ -19,7 +19,7 @@ def execute_query(conn, sql):
 @viz_mod.route('/viz', methods=['GET', 'POST'])
 def viz():
     conn = get_db_connection()
-    sql1 = 'select airport.airport_name, count(*) as total_flight from flight, airport where flight.airport_id=airport.id group by airport.airport_name'
+    sql1 = 'select airport_loc.airport_name, count(*) as total_flight from flight, airport_loc where flight.airport_id=airport_loc.id group by airport_loc.airport_name'
     results, cur = execute_query(conn, sql1)
     df = pd.DataFrame(results)
     df.columns = [col[0] for col in cur.description]
@@ -27,7 +27,7 @@ def viz():
     fig1.update_layout(title="Total number of flights from Jan 2018 to Jan 2022", height=800)
     fig1_html = fig1.to_html(full_html=False)
 
-    sql2 = 'select airport_name, latitude, longitude from airport'
+    sql2 = 'select airport_name, latitude, longitude from airport_loc'
     results, cur = execute_query(conn, sql2)
     df = pd.DataFrame(results)
     df.columns = [col[0] for col in cur.description]
